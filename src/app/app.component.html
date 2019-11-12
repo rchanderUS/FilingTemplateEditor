@@ -1,0 +1,46 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+rel="stylesheet">
+<button mat-button [matMenuTriggerFor]="File">File</button>
+<mat-menu #File="matMenu">
+  <button mat-menu-item>New</button>
+  <button mat-menu-item>Open</button>
+  <button mat-menu-item>Save</button>
+</mat-menu>
+<button mat-button [matMenuTriggerFor]="Edit">Edit</button>
+<mat-menu #Edit="matMenu">
+  <button mat-menu-item>Add Output File</button>
+</mat-menu>
+<button mat-button [matMenuTriggerFor]="View">View</button>
+<mat-menu #View="matMenu">
+  <button mat-menu-item>Preview</button>
+</mat-menu>
+<div class="bodyframe">
+
+    <mat-horizontal-stepper labelPosition="bottom" #stepper>
+        <mat-step [stepControl]="firstFormGroup">
+            <form [formGroup]="firstFormGroup">
+                <ng-template matStepLabel>EFile</ng-template>
+                <section-component></section-component>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="secondFormGroup">
+            <form [formGroup]="secondFormGroup">
+                <ng-template matStepLabel>Employer</ng-template>
+                <section-component></section-component>
+            </form>
+        </mat-step>
+        <mat-step optional [stepControl]="thirdFormGroup">
+            <form [formGroup]="thirdFormGroup">
+                <ng-template matStepLabel>Employee</ng-template>
+                <section-component></section-component>
+            </form>
+        </mat-step>
+    </mat-horizontal-stepper>  
+  
+ 
+  </div>
+  
+  
+  <!-- Copyright 2018 Google Inc. All Rights Reserved.
+      Use of this source code is governed by an MIT-style license that
+      can be found in the LICENSE file at http://angular.io/license -->

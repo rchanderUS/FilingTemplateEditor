@@ -1,0 +1,75 @@
+<mat-accordion class="example-headers-align" multi="true">
+        <mat-expansion-panel  hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Format
+            </mat-panel-title>
+            <mat-panel-description>
+              Header, Footer, Body Format for Output
+              <mat-icon>notes</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+      
+          <mat-form-field>
+            <input matInput placeholder="Header">
+          </mat-form-field>
+      
+          <mat-form-field>
+            <input matInput placeholder="Body">
+          </mat-form-field>
+
+          <mat-form-field>
+                <input matInput placeholder="Footer">
+              </mat-form-field>          
+      
+          <mat-action-row>
+            <button mat-button color="primary" (click)="AddLine()">Add Line</button>
+            <button mat-button color="warn" (click)="DeleteLine()">Delete Line</button>            
+          </mat-action-row>
+        </mat-expansion-panel>
+      
+        <mat-expansion-panel  hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Format
+            </mat-panel-title>
+            <mat-panel-description>
+                Header, Footer, Body Format for Summary
+              <mat-icon>notes</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+      
+          <mat-form-field>
+            <input matInput placeholder="Country">
+          </mat-form-field>
+      
+          <mat-action-row>
+                <button mat-button color="primary" (click)="AddLine()">Add Line</button>
+                <button mat-button color="warn" (click)="DeleteLine()">Delete Line</button> 
+          </mat-action-row>
+        </mat-expansion-panel>
+      
+        <mat-expansion-panel  hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Validation
+            </mat-panel-title>
+            <mat-panel-description>
+              Date Validation
+              <mat-icon>check_circle</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+      
+          <mat-form-field>
+            <input matInput placeholder="Date" [matDatepicker]="picker" (focus)="picker.open()" readonly>
+          </mat-form-field>
+          <mat-datepicker #picker></mat-datepicker>
+      
+          <mat-action-row>
+            <button mat-button color="primary" (click)="nextStep()">Add Validation</button>
+            <button mat-button color="warn" (click)="DeleteValidation()">Delete Validation</button>
+          </mat-action-row>
+        </mat-expansion-panel>
+      
+      </mat-accordion>
+      
