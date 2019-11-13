@@ -44,11 +44,15 @@ import {
   MatTooltipModule,
   MatTreeModule,
 } from '@angular/material';
+import { FormatComponent } from './format/format.component';
+import { ValidateComponent } from './validate/validate.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SectionComponent
+    SectionComponent,
+    FormatComponent,
+    ValidateComponent
   ],
   imports: [
     BrowserModule,
@@ -93,7 +97,8 @@ import {
     MatMenuModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [FormatComponent, ValidateComponent]
 })
 export class AppModule { }
 

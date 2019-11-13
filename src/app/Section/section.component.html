@@ -9,25 +9,9 @@
               <mat-icon>notes</mat-icon>
             </mat-panel-description>
           </mat-expansion-panel-header>
-      
-          <mat-form-field>
-            <input matInput placeholder="Header">
-          </mat-form-field>
-      
-          <mat-form-field>
-            <input matInput placeholder="Body">
-          </mat-form-field>
-
-          <mat-form-field>
-                <input matInput placeholder="Footer">
-              </mat-form-field>          
-      
-          <mat-action-row>
-            <button mat-button color="primary" (click)="AddLine()">Add Line</button>
-            <button mat-button color="warn" (click)="DeleteLine()">Delete Line</button>            
-          </mat-action-row>
+          <app-format></app-format>
         </mat-expansion-panel>
-      
+
         <mat-expansion-panel  hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -38,17 +22,9 @@
               <mat-icon>notes</mat-icon>
             </mat-panel-description>
           </mat-expansion-panel-header>
-      
-          <mat-form-field>
-            <input matInput placeholder="Country">
-          </mat-form-field>
-      
-          <mat-action-row>
-                <button mat-button color="primary" (click)="AddLine()">Add Line</button>
-                <button mat-button color="warn" (click)="DeleteLine()">Delete Line</button> 
-          </mat-action-row>
+          <app-format></app-format>
         </mat-expansion-panel>
-      
+
         <mat-expansion-panel  hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -59,17 +35,7 @@
               <mat-icon>check_circle</mat-icon>
             </mat-panel-description>
           </mat-expansion-panel-header>
-      
-          <mat-form-field>
-            <input matInput placeholder="Date" [matDatepicker]="picker" (focus)="picker.open()" readonly>
-          </mat-form-field>
-          <mat-datepicker #picker></mat-datepicker>
-      
-          <mat-action-row>
-            <button mat-button color="primary" (click)="nextStep()">Add Validation</button>
-            <button mat-button color="warn" (click)="DeleteValidation()">Delete Validation</button>
-          </mat-action-row>
+          <app-validate></app-validate>
         </mat-expansion-panel>
-      
+
       </mat-accordion>
-      
