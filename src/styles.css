@@ -26,3 +26,12 @@ div.card {
 .table {
   margin-top: 10px
 }
+
+.row-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.row-container > * {
+  width: 100%;
+}
