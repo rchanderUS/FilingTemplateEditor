@@ -1,0 +1,205 @@
+USE PTM
+GO
+
+DECLARE @CONFIGID INT
+DECLARE @TEMPLATEID INT
+Declare @ReplaceWhiteSpace varchar(50) = 'replace '' '','''''
+
+IF  NOT EXISTS (SELECT * FROM AgencyFileTemplate WHERE PAYEE_ID  = 'INSUI' and FILE_TYPE = 2) 
+BEGIN
+	INSERT INTO AgencyFileTemplate(PAYEE_ID, File_Type, CreatedUtcDt, UpdatedUtcDt, Version, EventSequenceNumber, UpdatedBy, Document_Class)
+	VALUES('INSUI', 2, GETDATE(), GETDATE(), 1, 1, 'User', 'QuarterlyTxtDocument')
+
+	SET @TEMPLATEID = SCOPE_IDENTITY();
+END
+ELSE
+BEGIN
+	Set @TEMPLATEID = (SELECT ID FROM AgencyFileTemplate WHERE PAYEE_ID  = 'INSUI' and FILE_TYPE = 2)
+END
+
+DECLARE @JSON VARCHAR(MAX) =
+'{
+    "Section": {
+    "Name": "efile",
+    "Properties": [
+       "year",
+       "quarter",
+       "stateCode",
+       "quarterLastMonth",
+       "quarterEndDate",
+       "Preparer.PreparerId",
+       "Preparer.LegalName",
+       "Payee.TaxId",
+       "Payee.WagesId",                         
+      {
+        "Name": "Client",
+        "Properties": [
+          "Name",
+          "ClientTin",
+          "Address",
+          "City",
+          "State",
+          "Zip",
+          "ZipExtension",
+		  "ClientTaxId",
+		  "PostQeId",
+		  "TaxRate",
+          {
+            "Name": "Employee",
+            "Properties": [
+              "FirstName",
+              "LastName",
+              "MiddleInitial",
+			  "SSN",
+			  "HireDate",
+			  "GrossWages",
+			  "PrimaryWorkZip",
+			  "OccupationCode",
+			  "SeasonalCode",
+			  "Month1_YN",
+			  "Month2_YN",
+			  "Month3_YN"
+            ],
+            "Validations": [
+			  {
+			    "Validation": "InvalidSSN ${Employee.SSN} || IsITIN ${Employee.SSN}",
+			    "MessageType": "Error",
+				"Message": "Error: Client Id: ${Client.Id} Employee Name: ${Employee.LastName}, ${Employee.FirstName} Token ''SSN'' with value ${Employee.Ssn} appears to be Itin or not a valid ssn."
+			  },
+			  {
+			    "Validation": "Equals ${Employee.FirstName},''''FirstName'''' || IsNotAlpha ${Employee.FirstName}",
+                "MessageType": "Warning",
+                "Message": "Warning: Client Id: ${Client.Id} Employee Name: ${Employee.LastName}, ${Employee.FirstName} Token ''FirstName'' with value ${Employee.FirstName} was empty or contains numbers."
+			  },
+			  {
+			     "Validation": "Equals ${Employee.LastName},''''LastName'''' || IsNotAlpha ${Employee.LastName}",
+                 "MessageType": "Warning",
+                 "Message": "Warning: Client Id: ${Client.Id} Employee Name: ${Employee.LastName}, ${Employee.FirstName} Token ''LastName'' with value ${Employee.LastName} was empty or contains numbers."
+			  },
+			  {
+			    "Validation": "IsNullOrEmpty ${Employee.MiddleInitial} || StartsWithNumber ${Employee.MiddleInitial}",
+			    "MessageType": "Warning",
+				"Message": "Warning: Client Id: ${Client.Id} Employee Name: ${Employee.LastName}, ${Employee.FirstName} Token ''MiddleInitial'' with value ${Employee.MiddleInitial} is empty or starts with a number."
+			  },
+			  {
+			    "Validation": "IsNullOrEmpty ${Employee.HireDate}",
+			    "MessageType": "Warning",
+				"Message": "Warning: Client Id: ${Client.Id} Employee Name: ${Employee.LastName}, ${Employee.FirstName} Token ''HireDate'' with value ${Employee.HireDate} is empty."
+			  },
+			  {
+				"Validation": "IsNotNumber ${Employee.GrossWages} || IsNegative ${Employee.GrossWages}",
+				"MessageType": "Error",
+				"Message": "Error: Client Id: ${Client.Id} Employee Name: ${Employee.LastName}, ${Employee.FirstName} Token ''GrossWages'' with value ${Employee.GrossWages} is negative or not numeric."
+			  },
+			  {
+			    "Validation": "IsNullOrEmpty ${Employee.PrimaryWorkZip}",
+			    "MessageType": "Warning",
+				"Message": "Warning: Client Id: ${Client.Id} Employee Name: ${Employee.LastName}, ${Employee.FirstName} Token ''PrimaryWorkZip'' with value ${Employee.PrimaryWorkZip} is empty."
+			  },
+			  {
+			    "Validation": "IsDateAfter ${Employee.HireDate}, ${efile.QuarterEndDate}",
+			    "MessageType": "Warning",
+				"Message": "Warning: Client Id: ${Client.Id} Employee Name: ${Employee.LastName}, ${Employee.FirstName} Token ''Employee.HireDate'' with value ${Employee.HireDate} has date after ''${efile.QuarterEndDate}''."
+			  },
+	          {
+	            "Validation": "IsNullOrEmpty ${Employee.SeasonalCode}",
+	            "MessageType": "Warning",
+	            "Message": "Warning: Client Id: ${Client.Id} Employee Name: ${Employee.LastName}, ${Employee.FirstName} Token ''Employee.SeasonalCode'' with value ${Employee.SeasonalCode} is empty."
+	          }
+			],
+            "Formats": [
+              {
+			    "filename": "INSUI_${now | format yyyyMMdd}.txt",
+                "lines": [
+                  {
+                    "Type": "Body",
+
+					"Format": "S${Employee.Ssn|allow `0-9`}${Employee.LastName|allow `A-Za-z\\`\\-`| trim 20 | pad 20, Right}${Employee.FirstName| allow `A-Za-z\\`\\-`| trim 12 | pad 12, Right}${Employee.MiddleInitial|allow `0-9A-Za-z`|pad 1, Left}18${Employee.HireDate|format MMddyyyy}${Employee.PrimaryWorkZip|trim 5|pad 5, Left, 0}${|pad 5}${Employee.GrossWages| replace ., | pad 14, Left, 0}${| pad 28, Left, 0}${Employee.OccupationCode| allow `0-9`| trim 6 |pad 6, Left, 0}${|pad 35}${Client.ClientTaxId| allow `0-9`| trim 6 |pad 6, Right}${| pad 52}${Employee.SeasonalCode| ' + @ReplaceWhiteSpace +'| trim 2 | pad 2, Left, 0}${|pad 5}${Employee.Month1_YN | pad 1}${Employee.Month2_YN | pad 1}${Employee.Month3_YN | pad 1}${Efile.quarterLastMonth|pad 2, Left, 0}${Efile.Year}${| pad 55}"
+                  }
+                ]
+              }
+        	]
+          }
+        ],'
+Set @JSON = @JSON + '"Validations": [
+		  {
+			"Validation": "HasLengthLessThan ${Client.ClientTaxId}, 6 || !HasLengthLessThan ${Client.ClientTaxId}, 8",
+			"MessageType": "Error",
+			"Message": "Error: Client Id: ${Client.Id} Length of Client ${Client.Name}''s Indiana SUTA Number (${Client.ClientTaxId}) is not 6 or 7. Please fix this before generating file for this client. Client is skipped."
+		  },
+		  {
+			"Validation": "IsNotNumber ${Client.ClientTaxId}, 0, 6",
+			"MessageType": "Error",
+			"Message": "Error: Client Id: ${Client.Id} Client ${Client.Name}''s Indiana SUTA Number (${Client.ClientTaxId}) is not numeric. Please fix this before generating file for this client. Client is skipped."
+		  },
+		  {
+		    "Validation": "IsNotAlpha ${Client.ClientTaxId}, 6, 1", 
+			"MessageType": "Error",
+			"Message": "Error: Client Id: ${Client.Id} Client ${Client.Name}''s Indiana SUTA Number (${Client.ClientTaxId}) of length 7 is not ending with a alpha value. Please fix this before generating file for this client. Client is skipped."
+		  },
+		  {
+		    "Validation": "IsNullOrEmpty ${Client.TaxRate} || Equals ${Client.TaxRate}, 0.0",
+			"MessageType": "Warning",
+			"Message": "Warning: Client Id: ${Client.Id} Client (${Client.Name}) doesn''t have tax rate."
+		  },
+		  {
+		    "Validation": "IsNullOrEmpty ${Client.ClientTin}",
+			"MessageType": "Warning",
+			"Message": "Warning: Client Id: ${Client.Id} Client (${Client.Name}) doesn''t have Fein."
+		  },
+		  {
+		    "Validation": "IsNotNumber ${Client.ClientTin} || !LengthEquals ${Client.ClientTin}, 9",
+			"MessageType": "Warning",
+			"Message": "Warning: Client Id: ${Client.Id} Token ''ClientTin'' with value ${Client.ClientTin} is not a number or length is not 9."
+		  }
+		],
+        "Formats": [
+          {
+            "filename": "INSUI_${now | format yyyyMMdd}.txt",
+            "lines": [
+              {
+                "Type": "Body",
+                "Format": "E${efile.year}${Client.ClientTin | allow `0-9` | trim 9 | pad 9, Left}${| pad 9, Left}${Client.Name | pad 50, Right}${Client.Address | pad 40, Right}${Client.City|pad 25, Right}${Client.State|pad 2, Right}${| pad 8,Left}${Client.ZipExtension| pad 5, Left, 0}${Client.Zip| pad 5, Left, 0}${| pad 14, Left}${Client.ClientTaxId| allow `0-9 A-Za-z` |pad 15, Right}${efile.quarterLastMonth | pad 2, left, 0}${| pad 86, Left}"
+              }
+            ]
+          },
+          {
+            "filename": "summary.txt",
+            "lines": [
+              {
+                  "Type": "Body",
+                  "Format": "${Client.Id | pad 12, Right}${Client.ClientTaxId | pad 15, Right}${Client.Name | pad 36, Right}${Count.Employee.SSN | trim 10 | pad 10, Right}${Sum.Employee.GrossWages | format F2 | pad 19, Right}${Client.ClientTin | pad 10, Right}"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "Formats": [
+      {
+        "filename": "INSUI_${now | format yyyyMMdd}.txt",
+        "lines": []
+      },
+      {
+        "filename": "summary.txt",
+        "lines": [
+          {
+              "Type": "Header",
+              "Format": "Date: ${now | format yyyyMMdd} \r\nTransmitter: ${efile.Preparer.LegalName} \r\nAgency: ${Efile.PayeeId} Q${Efile.Quarter|pad 2, Left, 0}${Efile.Year} \r\n\r\nClient ID   Acct No        Employer                            Emp Count Gross Wages        FEIN \r\n---------   -------        --------                            --------- -----------        ----"
+          }
+        ]
+      }
+    ]
+  }
+}'
+
+IF NOT EXISTS (SELECT TOP 1 1 FROM Agency_Template_Format_Mapper WHERE AgencyTemplateID = @TEMPLATEID)
+BEGIN
+	-- Document_Type = 1
+	INSERT INTO AgencyFileConfiguration (Document_Type, Json_Configuration, FileName_Format, Version, EventSequenceNumber) VALUES
+	( 1, @JSON,'INSUI_${now:yyyyMMdd_hhmmss}.txt', 1, 1)
+	SET @CONFIGID = SCOPE_IDENTITY()
+
+	INSERT INTO Agency_Template_Format_Mapper(AgencyTemplateID, AgencyConfigID)
+									   VALUES(@TEMPLATEID,      @CONFIGID)
+END

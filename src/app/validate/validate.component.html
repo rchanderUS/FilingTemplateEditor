@@ -1,7 +1,25 @@
-<mat-form-field>
-  <input matInput placeholder="Date" [matDatepicker]="picker" (focus)="picker.open()" readonly>
-</mat-form-field>
-<mat-datepicker #picker></mat-datepicker>
+<div class="row-container">
+
+  <mat-form-field>
+    <input matInput placeholder="Validation">
+  </mat-form-field>
+
+
+  <mat-form-field>
+    <mat-select>
+      <mat-option *ngFor="let errorType of ErrorTypes" [value]="errorType.value">
+        {{errorType.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field>
+        <input matInput placeholder="Message">
+  </mat-form-field>
+
+
+</div>
 
 <mat-action-row>
   <button mat-button color="primary" (click)="nextStep()">Add Validation</button>
