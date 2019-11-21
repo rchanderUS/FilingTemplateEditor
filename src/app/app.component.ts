@@ -16,6 +16,9 @@ export class AppComponent implements OnInit {
     Sections: SectionGroups[];
 
     ngOnInit() {
+      let Section = [ {ValidationGroups:[{Line1:"Hello1",Line2:"World1",Line3:"zzz"}], FormattingGroups:[{Line1:"Format1",Line2:"Warning",Line3:"yyy"}]},
+                      {ValidationGroups:[{Line1:"Hello2",Line2:"World2",Line3:"zzz"}], FormattingGroups:[{Line1:"Format2",Line2:"Warning",Line3:"yyy"}]},
+                      {ValidationGroups:[{Line1:"Hello3",Line2:"World3",Line3:"zzz"}], FormattingGroups:[{Line1:"Format3",Line2:"Warning",Line3:"yyy"}]},];
       this.firstFormGroup = this._formBuilder.group({
         firstCtrl: ['', Validators.required]
       });

@@ -19,6 +19,6 @@ export interface SectionGroups {
   styleUrls: ['./section.component.css'],
 })
 export class SectionComponent {
-
+  SectionGroupsInSection:SectionGroups;
 }
 
