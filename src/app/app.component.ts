@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import {SectionComponent, SectionGroups} from './Section/section.component';
+import {SectionComponent} from './Section/section.component';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +13,6 @@ export class AppComponent implements OnInit {
     firstFormGroup: FormGroup;
     secondFormGroup: FormGroup;
     thirdFormGroup: FormGroup;
-    Sections: SectionGroups[];
 
     ngOnInit() {
       this.firstFormGroup = this._formBuilder.group({
