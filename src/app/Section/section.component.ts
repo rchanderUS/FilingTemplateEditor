@@ -13,21 +13,28 @@ import {Component} from '@angular/core';
 })
 export class SectionComponent {
   sectionData: SectionData;
-  outputFormatData: FormatData;
 
   // tslint:disable-next-line: use-lifecycle-interface
   ngOnInit() {
-    this.sectionData= new SectionData();
-    this.sectionData.FormattingGroup = new Array<FormatData>(3);
-    // tslint:disable-next-line: comment-format
-    //this.sectionData.ValidationGroup = new Array<ValidationData>(3);
+    this.sectionData = new SectionData();
+    //ToDo: This has to be filled by parsing the file
+    this.sectionData.FormattingGroup = new Array<FormatData>(2);
 
-
-    this.outputFormatData = new FormatData();
-    this.sectionData.FormattingGroup[0]=new FormatData();
+    this.sectionData.FormattingGroup[0] = new FormatData();
     this.sectionData.FormattingGroup[0].header = 'Header output';
     this.sectionData.FormattingGroup[0].body = 'Header body';
     this.sectionData.FormattingGroup[0].footer = 'Header Footer';
+
+    this.sectionData.FormattingGroup[1] = new FormatData();
+    this.sectionData.FormattingGroup[1].header = 'Summary output';
+    this.sectionData.FormattingGroup[1].body = 'Summary body';
+    this.sectionData.FormattingGroup[1].footer = 'Summary Footer';
+
+    this.sectionData.ValidationGroup = new Array<ValidationData>(1);
+    this.sectionData.ValidationGroup[0] = new ValidationData();
+    this.sectionData.ValidationGroup[0].message = 'This is outrageous';
+    this.sectionData.ValidationGroup[0].rule = 'Check Date';
+    this.sectionData.ValidationGroup[0].errorType = 0;
   }
 
 }

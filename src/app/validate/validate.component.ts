@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ValidationData } from './../Model/validation-data';
+import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 
 export interface ErrorType {
   value: string;
@@ -14,13 +15,12 @@ export interface ErrorType {
 
 export class ValidateComponent implements OnInit {
 
+  @Input() validationData: ValidationData;
+
   ErrorTypes: ErrorType[] = [
     {value: 'Warning', viewValue: 'Warning'},
     {value: 'Error', viewValue: 'Error'},
   ];
-
-  Validation: string;
-  Message: string;
 
   constructor() { }
 

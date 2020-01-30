@@ -22,7 +22,7 @@
               <mat-icon>notes</mat-icon>
             </mat-panel-description>
           </mat-expansion-panel-header>
-          <app-format></app-format>
+          <app-format [formatData]='sectionData.FormattingGroup[1]'></app-format>
         </mat-expansion-panel>
 
         <mat-expansion-panel  hideToggle>
@@ -35,7 +35,7 @@
               <mat-icon>check_circle</mat-icon>
             </mat-panel-description>
           </mat-expansion-panel-header>
-          <app-validate></app-validate>
+          <app-validate  [validationData]='sectionData.ValidationGroup[0]'></app-validate>
         </mat-expansion-panel>
 
       </mat-accordion>
