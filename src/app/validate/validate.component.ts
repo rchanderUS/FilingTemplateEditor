@@ -26,5 +26,4 @@ export class ValidateComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }
