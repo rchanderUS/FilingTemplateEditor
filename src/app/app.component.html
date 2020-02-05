@@ -20,19 +20,19 @@ rel="stylesheet">
         <mat-step [stepControl]="firstFormGroup">
             <form [formGroup]="firstFormGroup">
                 <ng-template matStepLabel>EFile</ng-template>
-                <section-component [sectionData]='sectionDatas[0]'></section-component>
+                <section-component [(sectionData)]='sectionDatas[0]'></section-component>
             </form>
         </mat-step>
         <mat-step [stepControl]="secondFormGroup">
             <form [formGroup]="secondFormGroup">
                 <ng-template matStepLabel>Employer</ng-template>
-                <section-component [sectionData]='sectionDatas[1]'></section-component>
+                <section-component [(sectionData)]='sectionDatas[1]'></section-component>
             </form>
         </mat-step>
         <mat-step optional [stepControl]="thirdFormGroup">
             <form [formGroup]="thirdFormGroup">
                 <ng-template matStepLabel>Employee</ng-template>
-                <section-component [sectionData]='sectionDatas[2]'></section-component>
+                <section-component [(sectionData)]='sectionDatas[2]'></section-component>
             </form>
         </mat-step>
     </mat-horizontal-stepper>
