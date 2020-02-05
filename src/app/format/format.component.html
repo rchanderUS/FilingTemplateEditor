@@ -1,22 +1,22 @@
 <div class="row-container">
 
   <mat-form-field>
-    <input matInput placeholder="Header" [(value)]='formatData.header'>
+    <input matInput placeholder="Header" [(ngModel)]="formatData.header">
   </mat-form-field>
 
 
   <mat-form-field>
-    <input matInput placeholder="Body" value="{{formatData.body}}">
+    <input matInput placeholder="Body" [(ngModel)]="formatData.body">
   </mat-form-field>
 
 
   <mat-form-field>
-        <input matInput placeholder="Footer" value="{{formatData.footer}}">
+        <input matInput placeholder="Footer" [(ngModel)]="formatData.footer">
   </mat-form-field>
 
 
 </div>
 <mat-action-row>
-  <button mat-button color="primary" (click)="AddLine()">Add Line</button>
-  <button mat-button color="warn" (click)="DeleteLine()">Delete Line</button>
+  <button mat-button color="primary" >Add Line</button>
+  <button mat-button color="warn" >Delete Line</button>
 </mat-action-row>

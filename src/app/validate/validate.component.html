@@ -1,13 +1,13 @@
 <div class="row-container">
 
   <mat-form-field>
-    <input matInput placeholder="Validation" value="{{validationData.rule}}">
+    <input matInput placeholder="Validation" [(ngModel)]="validationData.rule">
   </mat-form-field>
 
 
   <mat-form-field>
     <mat-select>
-      <mat-option *ngFor="let errorType of ErrorTypes" [value]="errorType.value">
+      <mat-option *ngFor="let errorType of ErrorTypes" [(ngModel)]="errorType.value">
         {{errorType.viewValue}}
       </mat-option>
     </mat-select>
@@ -15,13 +15,13 @@
 
 
   <mat-form-field>
-        <input matInput placeholder="Message" value="{{validationData.message}}">
+        <input matInput placeholder="Message" [(ngModel)]="validationData.message">
   </mat-form-field>
 
 
 </div>
 
 <mat-action-row>
-  <button mat-button color="primary" (click)="nextStep()">Add Validation</button>
-  <button mat-button color="warn" (click)="DeleteValidation()">Delete Validation</button>
+  <button mat-button color="primary">Add Validation</button>
+  <button mat-button color="warn">Delete Validation</button>
 </mat-action-row>

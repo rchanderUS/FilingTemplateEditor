@@ -81,7 +81,13 @@ export class AppComponent implements OnInit {
     }
 
     SaveJson(event: Event) {
-      alert(this.sectionDatas[0].FormattingGroup[0].header);
+      alert(this.sectionDatas[0].FormattingGroup[0].header + this.sectionDatas[0].FormattingGroup[1].header
+        + this.sectionDatas[1].FormattingGroup[0].header + this.sectionDatas[1].FormattingGroup[1].header
+        + this.sectionDatas[2].FormattingGroup[0].header + this.sectionDatas[2].FormattingGroup[1].header);
+
+      // alert(this.sectionDatas[0].ValidationGroup[0].message
+      //    + this.sectionDatas[1].ValidationGroup[0].message
+      //    + this.sectionDatas[2].ValidationGroup[0].message);
 
     }
   }
