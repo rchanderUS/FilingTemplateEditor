@@ -14,6 +14,34 @@
         <input matInput placeholder="Footer" [(ngModel)]="formatData.footer">
   </mat-form-field>
 
+  <mat-form-field class="token-selection-list">
+    <mat-chip-list #chipList aria-label="Token selection">
+      <mat-chip
+        *ngFor="let token of tokens"
+        [selectable]="selectable"
+        [removable]="removable"
+        (removed)="remove(token)">
+        {{token}}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+      <input
+        placeholder="Enter Format..."
+        #tokenInput
+        [formControl]="tokenCtrl"
+        [matAutocomplete]="auto"
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="addOnBlur"
+        (matChipInputTokenEnd)="add($event)">
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-optgroup *ngFor="let group of tokenGroupOptions | async" [label]="group.model">
+        <mat-option *ngFor="let token of group.tokens | async" [value]="token">
+          {{token}}
+        </mat-option>
+    </mat-optgroup>
+    </mat-autocomplete>
+  </mat-form-field>
 
 </div>
 <mat-action-row>
