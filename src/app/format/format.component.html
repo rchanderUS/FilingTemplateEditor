@@ -35,12 +35,17 @@
         (matChipInputTokenEnd)="add($event)">
     </mat-chip-list>
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-option *ngFor="let token of filteredTokens | async" [value]="token">
+        {{token}}
+      </mat-option>
+    </mat-autocomplete>
+<!--     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
       <mat-optgroup *ngFor="let group of tokenGroupOptions | async" [label]="group.model">
         <mat-option *ngFor="let token of group.tokens | async" [value]="token">
           {{token}}
         </mat-option>
     </mat-optgroup>
-    </mat-autocomplete>
+    </mat-autocomplete -->
   </mat-form-field>
 
 </div>

@@ -1,35 +1,35 @@
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { FormatData } from './../Model/format-data';
 import { Component, OnInit, ChangeDetectionStrategy, Input, NgModule, ViewChild, ElementRef } from '@angular/core';
 import { FormsModule, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
-import {HOME , ENTER} from '@angular/cdk/keycodes';
 
 export interface TokenGroup {
   model: string;
   tokens: string[];
 }
 
-export const _filter = (opt: string[], value: string): string[] => {
+ export const _filter = (opt: string[], value: string): string[] => {
   const filterValue = value.toLowerCase();
 
   return opt.filter(item => item.toLowerCase().indexOf(filterValue) === 0);
 };
-
+ 
 @Component({
   selector: 'app-format',
   templateUrl: './format.component.html',
   styleUrls: ['./format.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 
-export class FormatComponent implements OnInit {
+export class FormatComponent {
+  visible = true;
   selectable = true;
   removable = true;
   addOnBlur = true;
-  separatorKeysCodes: number[] = [ENTER, HOME ];
+  separatorKeysCodes: number[] = [ENTER, COMMA];
   tokenCtrl = new FormControl();
   ////////////////
   tokenGroups: TokenGroup[] = [{
@@ -40,10 +40,10 @@ export class FormatComponent implements OnInit {
     tokens: ['SSN', 'First Name', 'Last Name']
   }];
 
-  tokenGroupOptions: Observable<TokenGroup[]>;
+  tokenGroupOptions: Observable<TokenGroup[]>; 
   ////////////////
   filteredTokens: Observable<string[]>;
-  tokens: string[] = [];
+  tokens: string[] = [];;
 
   allTokens: string[] = ['SSN', 'First Name', 'Last Name', 'Address', 'ClientID'];
 
@@ -54,12 +54,16 @@ export class FormatComponent implements OnInit {
 
 
   constructor() {
-      }
+       }
 
       ngOnInit(): void {
-        this.tokenGroupOptions = this.tokenCtrl.valueChanges.pipe(
+        this.filteredTokens = this.tokenCtrl.valueChanges.pipe(
+          startWith(null),
+          map((token: string | null) => token ? this._filter(token) : this.allTokens.slice()));
+    
+        /* this.tokenGroupOptions = this.tokenCtrl.valueChanges.pipe(
           startWith(''),
-          map(value => this._filterGroup(value)));
+          map(value => this._filterGroup(value)));  */
       }
 
       add(event: MatChipInputEvent): void {
@@ -109,6 +113,6 @@ export class FormatComponent implements OnInit {
             .map(group => ({model: group.model, tokens: _filter(group.tokens, value)}))
             .filter(group => group.model.length > 0);
         }
-      }
+      } 
 
 }
