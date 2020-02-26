@@ -46,6 +46,7 @@ import {
 } from '@angular/material';
 import { FormatComponent } from './format/format.component';
 import { ValidateComponent } from './validate/validate.component';
+import { TokenComponent } from './token/token.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { ValidateComponent } from './validate/validate.component';
     SectionComponent,
     FormatComponent,
     ValidateComponent,
+    TokenComponent,
   ],
   imports: [
     BrowserModule,

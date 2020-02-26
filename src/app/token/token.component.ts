@@ -1,5 +1,5 @@
+
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import { FormatData } from './../Model/format-data';
 import { Component, OnInit, ChangeDetectionStrategy, Input, NgModule, ViewChild, ElementRef } from '@angular/core';
 import { FormsModule, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -18,13 +18,13 @@ export const _filter = (opt: string[], value: string): string[] => {
 };
 
 @Component({
-  selector: 'app-format',
-  templateUrl: './format.component.html',
-  styleUrls: ['./format.component.css'],
+  selector: 'app-token',
+  templateUrl: './token.component.html',
+  styleUrls: ['./token.component.css']
 })
 
 
-export class FormatComponent {
+export class TokenComponent {
   visible = true;
   selectable = true;
   removable = true;
@@ -48,7 +48,7 @@ export class FormatComponent {
   @ViewChild('tokenInput', {static: false}) tokenInput: ElementRef<HTMLInputElement>;
   // @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
 
-  @Input() formatData: FormatData;
+  @Input() tokenString: string;
 
 
   constructor() {
@@ -62,8 +62,7 @@ export class FormatComponent {
           return this.tokenGroups
             .map(group => ({model: group.model, tokens: _filter(group.tokens, value)}))
             .filter(group => group.tokens.length > 0);
-        }
-        else {
+        } else {
           return this.tokenGroups;
         }
 
@@ -107,3 +106,4 @@ export class FormatComponent {
 
 
 }
+

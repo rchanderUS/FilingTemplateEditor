@@ -14,6 +14,10 @@
         <input matInput placeholder="Footer" [(ngModel)]="formatData.footer">
   </mat-form-field>
 
+<!--   <mat-form-field class="token-selection-list">
+    <app-token [tokenString]='formatData.header'></app-token>
+  </mat-form-field> -->
+
   <mat-form-field class="token-selection-list">
     <mat-chip-list #chipList aria-label="Token selection">
       <mat-chip
@@ -25,27 +29,22 @@
         <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
       </mat-chip>
       <input
-        placeholder="Enter Format..."
+        placeholder="Header Format..."
         #tokenInput
         [formControl]="tokenCtrl"
         [matAutocomplete]="auto"
         [matChipInputFor]="chipList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
         [matChipInputAddOnBlur]="addOnBlur"
-        (matChipInputTokenEnd)="add($event)">
+        (matChipInputTokenEnd)="add($event)"/>
     </mat-chip-list>
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-      <mat-option *ngFor="let token of filteredTokens | async" [value]="token">
-        {{token}}
-      </mat-option>
-    </mat-autocomplete>
-<!--     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-      <mat-optgroup *ngFor="let group of tokenGroupOptions | async" [label]="group.model">
-        <mat-option *ngFor="let token of group.tokens | async" [value]="token">
-          {{token}}
-        </mat-option>
-    </mat-optgroup>
-    </mat-autocomplete -->
+      <mat-optgroup *ngFor="let group of filteredTokens | async" [label]="group.model">
+            <mat-option *ngFor="let token of group.tokens" [value]="token">
+              {{token}}
+            </mat-option>
+      </mat-optgroup>
+   </mat-autocomplete>
   </mat-form-field>
 
 </div>
